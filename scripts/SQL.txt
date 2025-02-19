@@ -106,6 +106,14 @@ FROM Prendas
 LEFT JOIN Ventas ON Prendas.id_prenda = Ventas.id_prenda
 GROUP BY Prendas.id_prenda, Prendas.nombre, Prendas.stock;
 
-
+-- Consulta para obtener el listado de las 5 marcas más vendidas y su cantidad de ventas
+CREATE VIEW MarcasMasVendidas AS
+SELECT Marcas.nombre, SUM(Ventas.cantidad) AS total_vendido
+FROM Marcas
+JOIN Prendas ON Marcas.id_marca = Prendas.id_marca
+JOIN Ventas ON Prendas.id_prenda = Ventas.id_prenda
+GROUP BY Marcas.nombre
+ORDER BY total_vendido DESC
+LIMIT 5;
 
 
