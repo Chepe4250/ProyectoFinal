@@ -1,12 +1,12 @@
 <?php
 // http://localhost/libreria/api/v1/public/index.php/libros
-// http://localhost/libreria/api/v1/public/index.php/holamundo?nombre=Messi
-require_once 'controllers/LibrosController.php';
+// http://localhost/ProyectoFinal/api/public/index.php/marca
+require_once 'controllers/MarcasController.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Obtener la ruta solicitada y quitar 'public' si es necesario
-$requestUri = trim(str_replace('/libreria/api/v1/public', '', $_SERVER['REQUEST_URI']), '/');
+$requestUri = trim(str_replace('/ProyectoFinal/api/public', '', $_SERVER['REQUEST_URI']), '/');
 
 // Separar la ruta en segmentos
 // Quitar los parámetros de la URL para que no interfieran con la ruta
@@ -23,30 +23,42 @@ $id = $queryParams['id'] ?? null;
 
 //var_dump($id);
 
-if (isset($segments[1]) && $segments[1] == "libro") {
+if (isset($segments[1]) && $segments[1] == "marca") {
 
     switch ($method) {
         case 'GET':
             // ejemplo de endpoint postman.
             // http://localhost/libreria/api/v1/public/index.php/libro?id=5
             // http://localhost/libreria/api/v1/public/index.php/libro
+            // http://localhost/ProyectoFinal/api/public/index.php/marca
             if ($id != null) {
 
-                $libros = new  LibrosController();
-               $libros->obtenerLibro($id);
+                $marca = new  MarcasController();
+                $marca->obtenerMarca($id);
             } 
             else{
-               
-                $libros = new  LibrosController();
-                $libros->ObtenerTodos();
+            
+                $marca = new  MarcasController();
+                $marca->ObtenerTodos();
             }  
             break;
 
-            case 'POST':
-                $libros = new  LibrosController();
-                $libros->crearLibro();
-               // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
-                break;
+        case 'POST':
+            $marca = new  MarcasController();
+            $marca->crearMarca();
+            // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
+            break;
+
+        case 'PUT':
+            $marca = new  MarcasController();
+            $marca->actualizarMarca($id);
+            break;
+    
+        case 'DELETE':
+            $marca = new  MarcasController();
+            $marca->eliminarMarca(id: $id);
+            break;
+
         default:
             // Método no permitido
             header('HTTP/1.1 405 Method Not Allowed');
@@ -54,9 +66,6 @@ if (isset($segments[1]) && $segments[1] == "libro") {
             break;
     }
 }
-
-
-} 
 
 
 

@@ -47,13 +47,13 @@ class Marcas {
         // crear funcion
         // crear sql consulta
         //return algo
-        $stmt = $this->db->prepare("UPDATE Marcas SET nombre = ?, pais_origen = ?");
+        $stmt = $this->db->prepare("UPDATE Marcas SET nombre = ?, pais_origen = ? WHERE id_marca = ?");
         $stmt->execute([$data['nombre'], $data['pais_origen'],  $id]);
         return ['success' => true];
     }
 
     public function update($id, $data) {
-        $stmt = $this->db->prepare("UPDATE Marcas SET nombre = ?, pais_origen = ?");
+        $stmt = $this->db->prepare("UPDATE Marcas SET nombre = ?, pais_origen = ? WHERE id_marca = ?");
         $stmt->execute([$data['nombre'], $data['pais_origen'],  $id]);
         return ['success' => true];
     }
