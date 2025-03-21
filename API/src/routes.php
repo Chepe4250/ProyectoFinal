@@ -1,6 +1,7 @@
 <?php
-// http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca
+// http://localhost/Des_Plat/ProyectoFinal/api/public/index.php
 require_once 'controllers/MarcasController.php';
+require_once 'controllers/PrendasController.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -55,6 +56,49 @@ if (isset($segments[1]) && $segments[1] == "marca") {
         case 'DELETE':
             $marca = new  MarcasController();
             $marca->eliminarMarca(id: $id);
+            break;
+
+        default:
+            // Método no permitido
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
+    }
+}
+
+if (isset($segments[1]) && $segments[1] == "prenda") {
+
+    switch ($method) {
+        case 'GET':
+            // ejemplo de endpoint postman.
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=5
+            if ($id != null) {
+
+                $prenda = new  PrendasController();
+                $prenda->obtenerMarca($id);
+            } 
+            else{
+            
+                $prenda = new  PrendasController();
+                $prenda->ObtenerTodos();
+            }  
+            break;
+
+        case 'POST':
+            $prenda = new  PrendasController();
+            $prenda->crearMarca();
+            // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
+            break;
+
+        case 'PUT':
+            $prenda = new  PrendasController();
+            $prenda->actualizarMarca($id);
+            break;
+    
+        case 'DELETE':
+            $prenda = new  PrendasController();
+            $prenda->eliminarMarca(id: $id);
             break;
 
         default:
