@@ -11,9 +11,9 @@ class Marcas {
     public function obtenerTodos() {
         $stmt = $this->db->query("
         SELECT 
-                id_marca, 
-                nombre,
-                pais_origen
+                marcas.id_marca, 
+                marcas.nombre,
+                marcas.pais_origen
             FROM 
                 Marcas;
         ");

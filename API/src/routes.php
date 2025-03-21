@@ -6,7 +6,7 @@ require_once 'controllers/MarcasController.php';
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Obtener la ruta solicitada y quitar 'public' si es necesario
-$requestUri = trim(str_replace('/ProyectoFinal/api/public', '', $_SERVER['REQUEST_URI']), '/');
+$requestUri = trim(str_replace('/Des_Plat/ProyectoFinal/api/public', '', $_SERVER['REQUEST_URI']), '/');
 
 // Separar la ruta en segmentos
 // Quitar los parámetros de la URL para que no interfieran con la ruta
@@ -30,7 +30,7 @@ if (isset($segments[1]) && $segments[1] == "marca") {
             // ejemplo de endpoint postman.
             // http://localhost/libreria/api/v1/public/index.php/libro?id=5
             // http://localhost/libreria/api/v1/public/index.php/libro
-            // http://localhost/ProyectoFinal/api/public/index.php/marca
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca
             if ($id != null) {
 
                 $marca = new  MarcasController();
