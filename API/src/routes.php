@@ -1,6 +1,6 @@
 <?php
 // http://localhost/libreria/api/v1/public/index.php/libros
-// http://localhost/ProyectoFinal/api/public/index.php/marca
+// http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca
 require_once 'controllers/MarcasController.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
