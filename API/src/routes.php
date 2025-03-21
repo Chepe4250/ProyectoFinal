@@ -76,7 +76,7 @@ if (isset($segments[1]) && $segments[1] == "prenda") {
             if ($id != null) {
 
                 $prenda = new  PrendasController();
-                $prenda->obtenerMarca($id);
+                $prenda->obtenerPrenda($id);
             } 
             else{
             
@@ -87,18 +87,18 @@ if (isset($segments[1]) && $segments[1] == "prenda") {
 
         case 'POST':
             $prenda = new  PrendasController();
-            $prenda->crearMarca();
+            $prenda->crearPrenda();
             // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
             break;
 
         case 'PUT':
             $prenda = new  PrendasController();
-            $prenda->actualizarMarca($id);
+            $prenda->actualizarPrenda($id);
             break;
     
         case 'DELETE':
             $prenda = new  PrendasController();
-            $prenda->eliminarMarca(id: $id);
+            $prenda->eliminarPrenda(id: $id);
             break;
 
         default:
