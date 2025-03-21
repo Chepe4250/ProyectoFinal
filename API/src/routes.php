@@ -1,5 +1,4 @@
 <?php
-// http://localhost/libreria/api/v1/public/index.php/libros
 // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca
 require_once 'controllers/MarcasController.php';
 // Obtener el método de la solicitud
@@ -28,9 +27,8 @@ if (isset($segments[1]) && $segments[1] == "marca") {
     switch ($method) {
         case 'GET':
             // ejemplo de endpoint postman.
-            // http://localhost/libreria/api/v1/public/index.php/libro?id=5
-            // http://localhost/libreria/api/v1/public/index.php/libro
             // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=5
             if ($id != null) {
 
                 $marca = new  MarcasController();
