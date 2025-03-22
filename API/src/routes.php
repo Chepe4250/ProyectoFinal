@@ -3,6 +3,7 @@
 require_once 'controllers/MarcasController.php';
 require_once 'controllers/PrendasController.php';
 require_once 'controllers/VentasController.php';
+require_once 'controllers/Vista1Controller.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -143,6 +144,33 @@ if (isset($segments[1]) && $segments[1] == "venta") {
         case 'DELETE':
             $venta = new  VentasController();
             $venta->eliminarVenta(id: $id);
+            break;
+
+        default:
+            // Método no permitido
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
+    }
+}
+
+if (isset($segments[1]) && $segments[1] == "vista1") {
+
+    switch ($method) {
+        case 'GET':
+            // ejemplo de endpoint postman.
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista1
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=5
+            if ($id != null) {
+
+                $vista1 = new  Vista1Controller();
+                $vista1->obtenerVenta($id);
+            } 
+            else{
+            
+                $vista1 = new  Vista1Controller();
+                $vista1->ObtenerTodos();
+            }  
             break;
 
         default:
