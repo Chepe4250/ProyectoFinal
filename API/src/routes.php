@@ -2,6 +2,7 @@
 // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php
 require_once 'controllers/MarcasController.php';
 require_once 'controllers/PrendasController.php';
+require_once 'controllers/VentasController.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -99,6 +100,49 @@ if (isset($segments[1]) && $segments[1] == "prenda") {
         case 'DELETE':
             $prenda = new  PrendasController();
             $prenda->eliminarPrenda(id: $id);
+            break;
+
+        default:
+            // Método no permitido
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
+    }
+}
+
+if (isset($segments[1]) && $segments[1] == "venta") {
+
+    switch ($method) {
+        case 'GET':
+            // ejemplo de endpoint postman.
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=5
+            if ($id != null) {
+
+                $venta = new  VentasController();
+                $venta->obtenerVenta($id);
+            } 
+            else{
+            
+                $venta = new  VentasController();
+                $venta->ObtenerTodos();
+            }  
+            break;
+
+        case 'POST':
+            $venta = new  VentasController();
+            $venta->crearVenta();
+            // echo json_encode(value: ['Alert' => 'llamando al POST en libro']);
+            break;
+
+        case 'PUT':
+            $venta = new  VentasController();
+            $venta->actualizarVenta($id);
+            break;
+    
+        case 'DELETE':
+            $venta = new  VentasController();
+            $venta->eliminarVenta(id: $id);
             break;
 
         default:
