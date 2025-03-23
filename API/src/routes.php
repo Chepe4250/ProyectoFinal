@@ -5,6 +5,7 @@ require_once 'controllers/PrendasController.php';
 require_once 'controllers/VentasController.php';
 require_once 'controllers/Vista1Controller.php';
 require_once 'controllers/Vista2Controller.php';
+require_once 'controllers/Vista3Controller.php';
 // Obtener el método de la solicitud
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -178,7 +179,7 @@ if (isset($segments[1]) && $segments[1] == "vista2") {
     switch ($method) {
         case 'GET':
             // ejemplo de endpoint postman.
-            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista1
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista2
             $vista2 = new  Vista2Controller();
             $vista2->ObtenerTodos();
             break;
@@ -191,5 +192,21 @@ if (isset($segments[1]) && $segments[1] == "vista2") {
     }
 }
 
+if (isset($segments[1]) && $segments[1] == "vista3") {
 
+    switch ($method) {
+        case 'GET':
+            // ejemplo de endpoint postman.
+            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista3
+            $vista3 = new  Vista3Controller();
+            $vista3->ObtenerTodos();
+            break;
+
+        default:
+            // Método no permitido
+            header('HTTP/1.1 405 Method Not Allowed');
+            echo json_encode(['error' => 'Método no permitido']);
+            break;
+    }
+}
 
