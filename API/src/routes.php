@@ -160,17 +160,8 @@ if (isset($segments[1]) && $segments[1] == "vista1") {
         case 'GET':
             // ejemplo de endpoint postman.
             // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista1
-            // http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=5
-            if ($id != null) {
-
-                $vista1 = new  Vista1Controller();
-                $vista1->obtenerVenta($id);
-            } 
-            else{
-            
-                $vista1 = new  Vista1Controller();
-                $vista1->ObtenerTodos();
-            }  
+            $vista1 = new  Vista1Controller();
+            $vista1->ObtenerTodos();
             break;
 
         default:
