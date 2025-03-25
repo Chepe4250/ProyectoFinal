@@ -173,3 +173,82 @@ DELETE http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=13
 }
 ```
 
+---------------
+
+# 🚀 Ventas API - Postman Collection
+
+Este repositorio contiene una colección de Postman para realizar operaciones CRUD en la API de Ventas.
+
+## 📌 Descripción
+
+Esta colección permite realizar peticiones `GET`, `POST`, `PUT` y `DELETE` a la API para gestionar ventas. Incluye variables y pruebas automatizadas.
+
+## 📂 Endpoints disponibles
+
+### ➡️ Obtener datos (GET)
+```http
+GET http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta
+```
+#### 📌 Respuesta
+```javascript
+{
+    "id_venta": 7,
+    "id_prenda": 9,
+    "cantidad": 1,
+    "fecha": "2024-09-25",
+    "total": "79.99"
+}
+```
+
+### ➡️ Registrar una nueva venta (POST)
+```http
+POST http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta
+```
+#### 📌 Cuerpo de la solicitud
+```json
+{
+    "id_prenda": "5",
+    "cantidad": "3",
+    "fecha": "2024-09-20",
+    "total": "50"
+}
+```
+#### 📌 Respuesta
+```javascript
+{
+    "id": "11"
+}
+```
+
+### ➡️ Actualizar una venta (PUT)
+```http
+PUT http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=11
+```
+#### 📌 Cuerpo de la solicitud
+```json
+{
+    "id_prenda": "5",
+    "cantidad": "3",
+    "fecha": "2024-09-30",
+    "total": "60"
+}
+```
+#### 📌 Respuesta
+```javascript
+{
+    "Resultado": {
+        "success": true
+    }
+}
+```
+
+### ➡️ Eliminar una venta (DELETE)
+```http
+DELETE http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=11
+```
+#### 📌 Respuesta
+```javascript
+{
+    "Eliminado": true
+}
+```
