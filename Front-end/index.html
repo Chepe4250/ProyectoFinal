@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa</title>
+</head>
+<body>
+    <nav>
+        <h2>Tienda de ropa</h2>
+        <ul>
+            <!-- <li><a href="#" id="link-books">Marcas</a></li>
+            <li><a href="#" id="link-transactions">Prendas</a></li>
+            <li><a href="#" id="link-authors">Ventas</a></li>
+            <li><a href="reportes.html" id="link-reportes">Reportes</a></li> -->
+        </ul>
+    </nav>
+
+    <h2>Marcas existentes</h2>
+    <table border="1" id="tabla-marcas">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Pais_Origen</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+<!-- Contenido de la tabla con respuesta del endpoint-->
+
+        </tbody>
+    </table>
+
+    <script>
+    let tablaHTML = '';
+
+    function cargarMarcas() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-marcas tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(marca => {
+            const row = `
+                <tr>
+                    <td>${marca.id_marca}</td>
+                    <td>${marca.nombre}</td>
+                    <td>${marca.pais_origen}</td>
+                    <td>
+                        <button onclick="mostrarFormActualizarMarca(${marca.id_marca}, '${marca.nombre}', '${marca.pais_origen}')">Actualizar</button>
+                        <button onclick="eliminarMarca(${marca.id_marca})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML += row;
+            });
+
+
+        })
+        .catch(error => {
+            console.error("Error al cargar marcas:", error);
+        });
+    }
+
+    window.onload = cargarMarcas;
+
+    function mostrarFormActualizarMarca(id_marca, nombre, pais_origen) {
+    alert("Mostrar formulario para actualizar")
+    const form = document.getElementById('update-marca-form');
+    form.querySelector('#update-id_marca').value = id_marca;
+    form.querySelector('#update-nombre').value = nombre;
+    form.querySelector('#update-pais_origen').value = pais_origen;
+    form.style.display = 'block';
+
+    }
+    </script>
+
+            
+    <form id="agregar-marca-form" >
+        <h3>Agregar Nueva Marca</h3>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+        <label for="pais_origen">Pais_origen:</label>
+        <input type="text" id="pais_origen" name="pais_origen" required><br>
+        <button type="submit">Agregar Marca</button>
+    </form>
+
+    <form id="update-marca-form" style="display: none;">
+        <h3>Actualizar Marca</h3>
+        <input type="hidden" id="update-id_marca" name="id_marca">
+        <label for="update-nombre">Nombre:</label>
+        <input type="text" id="update-nombre" name="nombre" required><br>
+        <label for="update-pais_origen">Pais_origen:</label>
+        <input type="text" id="update-pais_origen" name="pais_origen" required><br>
+        <button type="submit">Actualizar Marca</button>
+    </form>
+</body>
+</html>
