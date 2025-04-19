@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+    
+        nav {
+            background-color: #222;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+    
+        nav h2 {
+            font-size: 1.5rem;
+        }
+    
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1rem;
+        }
+    
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+    
+        nav ul li a:hover {
+            background-color: #444;
+        }
+    
+        #main-content {
+            padding: 2rem;
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+    
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+    
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+        }
+    
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body id="contenido">
+    <nav>
+        <h2>Tienda de ropa</h2>
+        <ul>
+            <li><a href="index.html" id="link-inicio" class="ajax-link">Inicio</a></li>
+            <li><a href="marcas.html" id="link-marcas" class="ajax-link">Marcas</a></li>
+            <li><a href="prendas.html" id="link-prendas" class="ajax-link">Prendas</a></li>
+            <li><a href="ventas.html" id="link-ventas" class="ajax-link">Ventas</a></li>
+            <li><a href="reportes.html" id="link-reportes" class="ajax-link">Reportes</a></li>
+        </ul>
+    </nav>
+
+    <div id="main-content">
+        <h1>Bienvenido a la tienda de ropa</h1>
+        <p>Selecciona una opción del menú para comenzar.</p>
+    </div>
+</body>
+</html>
