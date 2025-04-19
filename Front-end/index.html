@@ -31,6 +31,7 @@
 
         </tbody>
     </table>
+    <button onclick="agregarMarca()">Agregar</button>
 
     <script>
     let tablaHTML = '';
@@ -72,6 +73,12 @@
 
     window.onload = cargarMarcas;
 
+    function agregarMarca() {
+        const form = document.getElementById('agregar-marca-form');
+        form.style.display = 'block';
+
+    }
+
     function mostrarFormActualizarMarca(id_marca, nombre, pais_origen) {
     alert("Mostrar formulario para actualizar")
     const form = document.getElementById('update-marca-form');
@@ -81,10 +88,41 @@
     form.style.display = 'block';
 
     }
+
+    document.getElementById('agregar-marca-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        const data = {
+            nombre: form.nombre.value,
+            pais_origen: form.pais_origen.value
+        };
+        guardarMarca(data);
+        form.reset();
+    });
+
+    function guardarMarca(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca guardada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de guardar
+        } else {
+            console.error('Error al guardar el libro:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+    }
     </script>
 
             
-    <form id="agregar-marca-form" >
+    <form id="agregar-marca-form" style="display: none;">
         <h3>Agregar Nueva Marca</h3>
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br>
