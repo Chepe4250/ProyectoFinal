@@ -102,6 +102,22 @@
         const forms = document.getElementById('agregar-marca-form');
         forms.style.display = 'none';
     });
+
+    document.getElementById('update-marca-form').addEventListener('submit', function(event) {
+
+        event.preventDefault();
+        const form = this;
+        console.log(form.id_marca.value);
+        const data = {
+            id_marca: parseInt(form.id_marca.value),
+            nombre: form.nombre.value,
+            pais_origen: form.pais_origen.value
+        };
+        actualizarMarca(data);
+        form.reset();
+        form.style.display = 'none';
+    });
+
     });
     
 
@@ -116,7 +132,7 @@
             console.log('Marca guardada exitosamente');
             cargarMarcas(); // Actualizar lista de libros después de guardar
         } else {
-            console.error('Error al guardar el libro:', xhr.statusText);
+            console.error('Error al guardar la marca:', xhr.statusText);
         }
     };
     xhr.onerror = function () {
@@ -124,6 +140,26 @@
     };
     xhr.send(JSON.stringify(data));
     }
+
+    function actualizarMarca(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + data.id_marca, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca actualizada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de actualizar
+        } else {
+            console.error('Error al actualizar la marca:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+}
     </script>
 
             
