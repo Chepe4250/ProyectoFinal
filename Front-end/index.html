@@ -159,7 +159,26 @@
         console.error('Error en la solicitud');
     };
     xhr.send(JSON.stringify(data));
-}
+    }
+
+    function eliminarMarca(id_marca) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + id_marca, true);
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca eliminada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de eliminar
+        } else {
+            console.error('Error al eliminar la marca:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send();
+    }
     </script>
 
             
