@@ -30,8 +30,7 @@
             </tr>
         </thead>
         <tbody>
-<!-- Contenido de la tabla con respuesta del endpoint-->
-
+        <!-- Contenido de la tabla con respuesta del endpoint-->
         </tbody>
     </table>
     <div style="text-align:center;">
@@ -196,10 +195,13 @@
     <!-- Formularios -->
     <form id="agregar-marca-form" style="display: none;">
         <h3>Agregar Nueva Marca</h3>
+
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br>
+
         <label for="pais_origen">Pais_origen:</label>
         <input type="text" id="pais_origen" name="pais_origen" required><br>
+        
         <button class="agregar" type="submit">Agregar Marca</button>
         <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-marca-form')">Cancelar</button>
     </form>

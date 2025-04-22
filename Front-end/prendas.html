@@ -19,30 +19,33 @@
         </ul>
     </nav>
 
-    <h2>Marcas existentes</h2>
-    <table border="1" id="tabla-marcas">
+    <h2>Prendas existentes</h2>
+    <table border="1" id="tabla-prendas">
         <thead>
             <tr>
             <th>ID</th>
             <th>Nombre</th>
-            <th>Pais_Origen</th>
+            <th>Tipo</th>
+            <th>Talla</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Id_marca</th>
             <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-<!-- Contenido de la tabla con respuesta del endpoint-->
-
+        <!-- Contenido de la tabla con respuesta del endpoint-->
         </tbody>
     </table>
     <div style="text-align:center;">
-        <button class="agregar" onclick="agregarMarca()">Agregar</button>
+        <button class="agregar" onclick="agregarPrenda()">Agregar</button>
     </div>
 
     <script>
     let tablaHTML = '';
 
-    function cargarMarcas() {
-        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca')
+    function cargarPrendas() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda')
         .then(response => response.text())
         .then(text => {
           // Eliminamos cualquier carácter de control no imprimible al inicio
@@ -50,18 +53,22 @@
             return JSON.parse(cleanText);
         })
         .then(data => {
-            const tbody = document.querySelector('#tabla-marcas tbody');
+            const tbody = document.querySelector('#tabla-prendas tbody');
             tbody.innerHTML = ' ';
 
-            data.forEach(marca => {
+            data.forEach(prenda => {
             const row = `
                 <tr>
-                    <td>${marca.id_marca}</td>
-                    <td>${marca.nombre}</td>
-                    <td>${marca.pais_origen}</td>
+                    <td>${prenda.id_prenda}</td>
+                    <td>${prenda.nombre}</td>
+                    <td>${prenda.tipo}</td>
+                    <td>${prenda.talla}</td>
+                    <td>${prenda.precio}</td>
+                    <td>${prenda.stock}</td>
+                    <td>${prenda.id_marca}</td>
                     <td>
-                        <button class="actualizar" onclick="mostrarFormActualizarMarca(${marca.id_marca}, '${marca.nombre}', '${marca.pais_origen}')">Actualizar</button>
-                        <button class="eliminar" onclick="eliminarMarca(${marca.id_marca})">Eliminar</button>
+                        <button class="actualizar" onclick="mostrarFormActualizarPrenda(${prenda.id_prenda}, '${prenda.nombre}', '${prenda.tipo}', '${prenda.talla}', ${prenda.precio}, ${prenda.stock}, ${prenda.id_marca})">Actualizar</button>
+                        <button class="eliminar" onclick="eliminarMarca(${prenda.id_prenda})">Eliminar</button>
                     </td>
                 </tr>
             `;
@@ -72,43 +79,51 @@
 
         })
         .catch(error => {
-            console.error("Error al cargar marcas:", error);
+            console.error("Error al cargar prendas:", error);
         });
     }
 
-    window.onload = cargarMarcas;
+    window.onload = cargarPrendas;
 
-    function agregarMarca() {
-        const form = document.getElementById('agregar-marca-form');
+    function agregarPrenda() {
+        const form = document.getElementById('agregar-prenda-form');
         form.style.display = 'block';
 
     }
 
-    function mostrarFormActualizarMarca(id_marca, nombre, pais_origen) {
+    function mostrarFormActualizarPrenda(id_prenda, nombre, tipo, talla, precio, stock, id_marca) {
     alert("Mostrar formulario para actualizar")
-    const form = document.getElementById('update-marca-form');
-    form.querySelector('#update-id_marca').value = id_marca;
+    const form = document.getElementById('update-prenda-form');
+    form.querySelector('#update-id_prenda').value = id_prenda;
     form.querySelector('#update-nombre').value = nombre;
-    form.querySelector('#update-pais_origen').value = pais_origen;
+    form.querySelector('#update-tipo').value = tipo;
+    form.querySelector('#update-talla').value = talla;
+    form.querySelector('#update-precio').value = precio;
+    form.querySelector('#update-stock').value = stock;
+    form.querySelector('#update-id_marca').value = id_marca;
     form.style.display = 'block';
 
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('agregar-marca-form').addEventListener('submit', function(event) {
+    document.getElementById('agregar-prenda-form').addEventListener('submit', function(event) {
         event.preventDefault();
         const form = this;
         const data = {
             nombre: form.nombre.value,
-            pais_origen: form.pais_origen.value
+            tipo: form.tipo.value,
+            talla: form.talla.value,
+            precio: form.precio.value,
+            stock: form.stock.value,
+            id_marca: form.id_marca.value
         };
-        guardarMarca(data);
+        guardarPrenda(data);
         form.reset();
-        const forms = document.getElementById('agregar-marca-form');
+        const forms = document.getElementById('agregar-prenda-form');
         forms.style.display = 'none';
     });
 
-    document.getElementById('update-marca-form').addEventListener('submit', function(event) {
+    document.getElementById('update-prenda-form').addEventListener('submit', function(event) {
 
         event.preventDefault();
         const form = this;
@@ -126,7 +141,7 @@
     });
     
 
-    function guardarMarca(data) {
+    function guardarPrenda(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -194,25 +209,56 @@
     </script>
 
     <!-- Formularios -->
-    <form id="agregar-marca-form" style="display: none;">
-        <h3>Agregar Nueva Marca</h3>
+    <form id="agregar-prenda-form" style="display: none;">
+        <h3>Agregar Nueva Prenda</h3>
+
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br>
-        <label for="pais_origen">Pais_origen:</label>
-        <input type="text" id="pais_origen" name="pais_origen" required><br>
-        <button class="agregar" type="submit">Agregar Marca</button>
-        <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-marca-form')">Cancelar</button>
+
+        <label for="tipo">Tipo:</label>
+        <input type="text" id="tipo" name="tipo" required><br>
+
+        <label for="talla">Talla:</label>
+        <input type="text" id="talla" name="talla" required><br>
+
+        <label for="precio">Precio:</label>
+        <input type="number" id="precio" name="precio" required><br>
+
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" name="stock" required><br>
+
+        <label for="id_marca">Id_marca:</label>
+        <input type="number" id="id_marca" name="id_marca" required><br>
+
+        <button class="agregar" type="submit">Agregar Prenda</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-prenda-form')">Cancelar</button>
     </form>
 
-    <form id="update-marca-form" style="display: none;">
+    <form id="update-prenda-form" style="display: none;">
         <h3>Actualizar Marca</h3>
-        <input type="hidden" id="update-id_marca" name="id_marca">
+
+        <input type="hidden" id="update-id_prenda" name="id_prenda">
+
         <label for="update-nombre">Nombre:</label>
         <input type="text" id="update-nombre" name="nombre" required><br>
-        <label for="update-pais_origen">Pais_origen:</label>
-        <input type="text" id="update-pais_origen" name="pais_origen" required><br>
-        <button class="actualizar" type="submit">Actualizar Marca</button>
-        <button type="button" class="cancelar" onclick="cancelarFormulario('update-marca-form')">Cancelar</button>
+
+        <label for="update-tipo">Tipo:</label>
+        <input type="text" id="update-tipo" name="tipo" required><br>
+
+        <label for="update-talla">Talla:</label>
+        <input type="text" id="update-talla" name="talla" required><br>
+
+        <label for="update-precio">Precio:</label>
+        <input type="text" id="update-precio" name="precio" required><br>
+
+        <label for="update-stock">Stock:</label>
+        <input type="text" id="update-stock" name="stock" required><br>
+
+        <label for="update-id_marca">Id_marca:</label>
+        <input type="text" id="update-id_marca" name="id_marca" required><br>
+
+        <button class="actualizar" type="submit">Actualizar Prenda</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('update-prenda-form')">Cancelar</button>
     </form>
 </body>
 </html>
