@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa</title>
+
+    <link rel="stylesheet" href="styles/estilos.css">
+</head>
+<body>
+    <nav>
+        <h2>Tienda de ropa</h2>
+        <ul>
+            <li><a href="index.html" id="link-inicio" class="ajax-link">Inicio</a></li>
+            <li><a href="marcas.html" id="link-marcas" class="ajax-link">Marcas</a></li>
+            <li><a href="prendas.html" id="link-prendas" class="ajax-link">Prendas</a></li>
+            <li><a href="ventas.html" id="link-ventas" class="ajax-link">Ventas</a></li>
+            <li><a href="reportes.html" id="link-reportes" class="ajax-link">Reportes</a></li>
+        </ul>
+    </nav>
+
+    <h2>Marcas existentes</h2>
+    <table border="1" id="tabla-marcas">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Pais_Origen</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+<!-- Contenido de la tabla con respuesta del endpoint-->
+
+        </tbody>
+    </table>
+    <div style="text-align:center;">
+        <button class="agregar" onclick="agregarMarca()">Agregar</button>
+    </div>
+
+    <script>
+    let tablaHTML = '';
+
+    function cargarMarcas() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-marcas tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(marca => {
+            const row = `
+                <tr>
+                    <td>${marca.id_marca}</td>
+                    <td>${marca.nombre}</td>
+                    <td>${marca.pais_origen}</td>
+                    <td>
+                        <button class="actualizar" onclick="mostrarFormActualizarMarca(${marca.id_marca}, '${marca.nombre}', '${marca.pais_origen}')">Actualizar</button>
+                        <button class="eliminar" onclick="eliminarMarca(${marca.id_marca})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML += row;
+            });
+
+
+        })
+        .catch(error => {
+            console.error("Error al cargar marcas:", error);
+        });
+    }
+
+    window.onload = cargarMarcas;
+
+    function agregarMarca() {
+        const form = document.getElementById('agregar-marca-form');
+        form.style.display = 'block';
+
+    }
+
+    function mostrarFormActualizarMarca(id_marca, nombre, pais_origen) {
+    alert("Mostrar formulario para actualizar")
+    const form = document.getElementById('update-marca-form');
+    form.querySelector('#update-id_marca').value = id_marca;
+    form.querySelector('#update-nombre').value = nombre;
+    form.querySelector('#update-pais_origen').value = pais_origen;
+    form.style.display = 'block';
+
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('agregar-marca-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        const data = {
+            nombre: form.nombre.value,
+            pais_origen: form.pais_origen.value
+        };
+        guardarMarca(data);
+        form.reset();
+        const forms = document.getElementById('agregar-marca-form');
+        forms.style.display = 'none';
+    });
+
+    document.getElementById('update-marca-form').addEventListener('submit', function(event) {
+
+        event.preventDefault();
+        const form = this;
+        console.log(form.id_marca.value);
+        const data = {
+            id_marca: parseInt(form.id_marca.value),
+            nombre: form.nombre.value,
+            pais_origen: form.pais_origen.value
+        };
+        actualizarMarca(data);
+        form.reset();
+        form.style.display = 'none';
+    });
+
+    });
+    
+
+    function guardarMarca(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca guardada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de guardar
+        } else {
+            console.error('Error al guardar la marca:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+    }
+
+    function actualizarMarca(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + data.id_marca, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca actualizada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de actualizar
+        } else {
+            console.error('Error al actualizar la marca:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+    }
+
+    function cancelarFormulario(idFormulario) {
+        const form = document.getElementById(idFormulario);
+        form.reset(); // opcional, limpia el formulario
+        form.style.display = 'none';
+    }
+
+
+    function eliminarMarca(id_marca) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + id_marca, true);
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Marca eliminada exitosamente');
+            cargarMarcas(); // Actualizar lista de libros después de eliminar
+        } else {
+            console.error('Error al eliminar la marca:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send();
+    }
+    </script>
+
+    <!-- Formularios -->
+    <form id="agregar-marca-form" style="display: none;">
+        <h3>Agregar Nueva Marca</h3>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br>
+        <label for="pais_origen">Pais_origen:</label>
+        <input type="text" id="pais_origen" name="pais_origen" required><br>
+        <button class="agregar" type="submit">Agregar Marca</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-marca-form')">Cancelar</button>
+    </form>
+
+    <form id="update-marca-form" style="display: none;">
+        <h3>Actualizar Marca</h3>
+        <input type="hidden" id="update-id_marca" name="id_marca">
+        <label for="update-nombre">Nombre:</label>
+        <input type="text" id="update-nombre" name="nombre" required><br>
+        <label for="update-pais_origen">Pais_origen:</label>
+        <input type="text" id="update-pais_origen" name="pais_origen" required><br>
+        <button class="actualizar" type="submit">Actualizar Marca</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('update-marca-form')">Cancelar</button>
+    </form>
+</body>
+</html>
