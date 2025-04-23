@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa - Reportes</title>
+    <link rel="stylesheet" href="styles/estilos.css">
+</head>
+<body>
+    <nav>
+        <h2>Tienda de ropa</h2>
+        <ul>
+            <li><a href="index.html" id="link-inicio" class="ajax-link">Inicio</a></li>
+            <li><a href="marcas.html" id="link-marcas" class="ajax-link">Marcas</a></li>
+            <li><a href="prendas.html" id="link-prendas" class="ajax-link">Prendas</a></li>
+            <li><a href="ventas.html" id="link-ventas" class="ajax-link">Ventas</a></li>
+            <li><a href="reportes.html" id="link-reportes" class="ajax-link">Reportes</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <h3 style="text-align: center; margin-top: 1rem;">Marcas con ventas</h3>
+        <table id="tabla-vista1">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Contenido de la tabla con respuesta del endpoint-->
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3 style="text-align: center; margin-top: 2rem;">Marcas mas vendidas</h3>
+        <table id="tabla-vista2">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Total_vendido</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Contenido de la tabla con respuesta del endpoint-->
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h3 style="text-align: center; margin-top: 2rem;">Stock de prendas</h3>
+        <table id="tabla-vista3">
+            <thead>
+                <tr>
+                    <th>ID_prenda</th>
+                    <th>Nombre</th>
+                    <th>Cantidad_vendida</th>
+                    <th>Stock_restante</th>
+                </tr>
+            </thead>
+            <tbody>
+            <!-- Contenido de la tabla con respuesta del endpoint-->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let tablaHTML1 = '', tablaHTML2 = '', tablaHTML3 = '';
+
+        function cargarVista1() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista1')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-vista1 tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(vista1 => {
+            const row = `
+                <tr>
+                    <td>${vista1.nombre}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML1 += row;
+            });
+
+            cargarVista2();
+
+        })
+        .catch(error => {
+            console.error("Error al cargar vista1:", error);
+        });
+        }
+
+
+        function cargarVista2() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista2')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-vista2 tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(vista2 => {
+            const row = `
+                <tr>
+                    <td>${vista2.nombre}</td>
+                    <td>${vista2.total_vendido}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML2 += row;
+            });
+
+            cargarVista3();
+
+        })
+        .catch(error => {
+            console.error("Error al cargar vista2:", error);
+        });
+        }
+
+
+        function cargarVista3() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista3')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-vista3 tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(vista3 => {
+            const row = `
+                <tr>
+                    <td>${vista3.id_prenda}</td>
+                    <td>${vista3.nombre}</td>
+                    <td>${vista3.cantidad_vendida}</td>
+                    <td>${vista3.stock_restante}</td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML3 += row;
+            });
+
+
+        })
+        .catch(error => {
+            console.error("Error al cargar vista3:", error);
+        });
+        }
+
+        window.onload = cargarVista1;
+    </script>
+</body>
+</html>
