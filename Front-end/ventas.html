@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Ropa</title>
+
+    <link rel="stylesheet" href="styles/estilos.css">
+</head>
+<body>
+    <nav>
+        <h2>Tienda de ropa</h2>
+        <ul>
+            <li><a href="index.html" id="link-inicio" class="ajax-link">Inicio</a></li>
+            <li><a href="marcas.html" id="link-marcas" class="ajax-link">Marcas</a></li>
+            <li><a href="prendas.html" id="link-prendas" class="ajax-link">Prendas</a></li>
+            <li><a href="ventas.html" id="link-ventas" class="ajax-link">Ventas</a></li>
+            <li><a href="reportes.html" id="link-reportes" class="ajax-link">Reportes</a></li>
+        </ul>
+    </nav>
+
+    <h2>Ventas realizadas</h2>
+    <table border="1" id="tabla-ventas">
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>Id_prenda</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- Contenido de la tabla con respuesta del endpoint-->
+        </tbody>
+    </table>
+    <div style="text-align:center;">
+        <button class="agregar" onclick="agregarVenta()">Agregar</button>
+    </div>
+
+    <script>
+    let tablaHTML = '';
+
+    function cargarVentas() {
+        fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta')
+        .then(response => response.text())
+        .then(text => {
+          // Eliminamos cualquier carácter de control no imprimible al inicio
+            const cleanText = text.replace(/^[\u0000-\u001F\u007F\uFEFF]+/, '');
+            return JSON.parse(cleanText);
+        })
+        .then(data => {
+            const tbody = document.querySelector('#tabla-ventas tbody');
+            tbody.innerHTML = ' ';
+
+            data.forEach(venta => {
+            const row = `
+                <tr>
+                    <td>${venta.id_venta}</td>
+                    <td>${venta.id_prenda}</td>
+                    <td>${venta.cantidad}</td>
+                    <td>${venta.fecha}</td>
+                    <td>${venta.total}</td>
+                    <td>
+                        <button class="actualizar" onclick="mostrarFormActualizarVenta(${venta.id_venta}, ${venta.id_prenda}, ${venta.cantidad}, ${venta.fecha}, ${venta.total})">Actualizar</button>
+                        <button class="eliminar" onclick="eliminarVenta(${venta.id_venta})">Eliminar</button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML += row;
+            tablaHTML += row;
+            });
+
+
+        })
+        .catch(error => {
+            console.error("Error al cargar ventas:", error);
+        });
+    }
+
+    window.onload = cargarVentas;
+
+    function agregarVenta() {
+        const form = document.getElementById('agregar-venta-form');
+        form.style.display = 'block';
+
+    }
+
+    function mostrarFormActualizarVenta(id_prenda, nombre, tipo, talla, precio, stock, id_marca) {
+    alert("Mostrar formulario para actualizar")
+    const form = document.getElementById('update-venta-form');
+    form.querySelector('#update-id_prenda').value = id_prenda;
+    form.querySelector('#update-nombre').value = nombre;
+    form.querySelector('#update-tipo').value = tipo;
+    form.querySelector('#update-talla').value = talla;
+    form.querySelector('#update-precio').value = precio;
+    form.querySelector('#update-stock').value = stock;
+    form.querySelector('#update-id_marca').value = id_marca;
+    form.style.display = 'block';
+
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('agregar-venta-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = this;
+        const data = {
+            nombre: form.nombre.value,
+            tipo: form.tipo.value,
+            talla: form.talla.value,
+            precio: parseInt(form.precio.value),
+            stock: parseInt(form.stock.value),
+            id_marca: parseInt(form.id_marca.value)
+        };
+        guardarPrenda(data);
+        form.reset();
+        const forms = document.getElementById('agregar-prenda-form');
+        forms.style.display = 'none';
+    });
+
+    document.getElementById('update-prenda-form').addEventListener('submit', function(event) {
+
+        event.preventDefault();
+        const form = this;
+        console.log(form.id_prenda.value);
+        const data = {
+            id_prenda: parseInt(form.id_prenda.value),
+            nombre: form.nombre.value,
+            tipo: form.tipo.value,
+            talla: form.talla.value,
+            precio: parseInt(form.precio.value),
+            stock: parseInt(form.stock.value),
+            id_marca: parseInt(form.id_marca.value)
+        };
+        actualizarPrenda(data);
+        form.reset();
+        form.style.display = 'none';
+    });
+
+    });
+    
+
+    function guardarPrenda(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Prenda guardada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de guardar
+        } else {
+            console.error('Error al guardar la prenda:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+    }
+
+    function actualizarPrenda(data) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + data.id_prenda, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Prenda actualizada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de actualizar
+        } else {
+            console.error('Error al actualizar la prenda:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send(JSON.stringify(data));
+    }
+
+    function cancelarFormulario(idFormulario) {
+        const form = document.getElementById(idFormulario);
+        form.reset(); // opcional, limpia el formulario
+        form.style.display = 'none';
+    }
+
+
+    function eliminarVenta(id_prenda) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + id_prenda, true);
+    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log('Prenda eliminada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de eliminar
+        } else {
+            console.error('Error al eliminar la prenda:', xhr.statusText);
+        }
+    };
+    xhr.onerror = function () {
+        console.error('Error en la solicitud');
+    };
+    xhr.send();
+    }
+    </script>
+
+    <!-- Formularios -->
+    <form id="agregar-venta-form" style="display: none;">
+        <h3>Agregar Nueva Venta</h3>
+
+        <label for="id_prenda">Id_Prenda:</label>
+        <input type="text" id="id_prenda" name="id_prenda" required><br>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="text" id="cantidad" name="cantidad" required><br>
+
+        <label for="fecha">Fecha:</label>
+        <input type="text" id="fecha" name="fecha" required><br>
+
+        <label for="total">Total:</label>
+        <input type="number" id="total" name="total" required><br>
+
+        <button class="agregar" type="submit">Agregar Venta</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-venta-form')">Cancelar</button>
+    </form>
+
+    <form id="update-venta-form" style="display: none;">
+        <h3>Actualizar Marca</h3>
+
+        <input type="hidden" id="update-id_venta" name="id_venta">
+
+        <label for="update-id_prenda">Id_Prenda:</label>
+        <input type="text" id="update-id_prenda" name="id_prenda" required><br>
+
+        <label for="update-cantidad">Cantidad:</label>
+        <input type="text" id="update-cantidad" name="cantidad" required><br>
+
+        <label for="update-fecha">Fecha:</label>
+        <input type="text" id="update-fecha" name="fecha" required><br>
+
+        <label for="update-total">Total:</label>
+        <input type="number" id="update-total" name="total" required><br>
+
+        <button class="actualizar" type="submit">Actualizar Venta</button>
+        <button type="button" class="cancelar" onclick="cancelarFormulario('update-venta-form')">Cancelar</button>
+    </form>
+</body>
+</html>
