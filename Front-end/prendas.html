@@ -68,7 +68,7 @@
                     <td>${prenda.id_marca}</td>
                     <td>
                         <button class="actualizar" onclick="mostrarFormActualizarPrenda(${prenda.id_prenda}, '${prenda.nombre}', '${prenda.tipo}', '${prenda.talla}', ${prenda.precio}, ${prenda.stock}, ${prenda.id_marca})">Actualizar</button>
-                        <button class="eliminar" onclick="eliminarMarca(${prenda.id_prenda})">Eliminar</button>
+                        <button class="eliminar" onclick="eliminarPrenda(${prenda.id_prenda})">Eliminar</button>
                     </td>
                 </tr>
             `;
@@ -113,9 +113,9 @@
             nombre: form.nombre.value,
             tipo: form.tipo.value,
             talla: form.talla.value,
-            precio: form.precio.value,
-            stock: form.stock.value,
-            id_marca: form.id_marca.value
+            precio: parseInt(form.precio.value),
+            stock: parseInt(form.stock.value),
+            id_marca: parseInt(form.id_marca.value)
         };
         guardarPrenda(data);
         form.reset();
@@ -127,13 +127,17 @@
 
         event.preventDefault();
         const form = this;
-        console.log(form.id_marca.value);
+        console.log(form.id_prenda.value);
         const data = {
-            id_marca: parseInt(form.id_marca.value),
+            id_prenda: parseInt(form.id_prenda.value),
             nombre: form.nombre.value,
-            pais_origen: form.pais_origen.value
+            tipo: form.tipo.value,
+            talla: form.talla.value,
+            precio: parseInt(form.precio.value),
+            stock: parseInt(form.stock.value),
+            id_marca: parseInt(form.id_marca.value)
         };
-        actualizarMarca(data);
+        actualizarPrenda(data);
         form.reset();
         form.style.display = 'none';
     });
@@ -143,16 +147,16 @@
 
     function guardarPrenda(data) {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca', true);
+    xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            console.log('Marca guardada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de guardar
+            console.log('Prenda guardada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de guardar
         } else {
-            console.error('Error al guardar la marca:', xhr.statusText);
+            console.error('Error al guardar la prenda:', xhr.statusText);
         }
     };
     xhr.onerror = function () {
@@ -161,18 +165,18 @@
     xhr.send(JSON.stringify(data));
     }
 
-    function actualizarMarca(data) {
+    function actualizarPrenda(data) {
     const xhr = new XMLHttpRequest();
-    xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + data.id_marca, true);
+    xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + data.id_prenda, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            console.log('Marca actualizada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de actualizar
+            console.log('Prenda actualizada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de actualizar
         } else {
-            console.error('Error al actualizar la marca:', xhr.statusText);
+            console.error('Error al actualizar la prenda:', xhr.statusText);
         }
     };
     xhr.onerror = function () {
@@ -188,17 +192,17 @@
     }
 
 
-    function eliminarMarca(id_marca) {
+    function eliminarPrenda(id_prenda) {
     const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + id_marca, true);
+    xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + id_prenda, true);
     //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
-            console.log('Marca eliminada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de eliminar
+            console.log('Prenda eliminada exitosamente');
+            cargarPrendas(); // Actualizar lista de libros después de eliminar
         } else {
-            console.error('Error al eliminar la marca:', xhr.statusText);
+            console.error('Error al eliminar la prenda:', xhr.statusText);
         }
     };
     xhr.onerror = function () {
@@ -249,13 +253,13 @@
         <input type="text" id="update-talla" name="talla" required><br>
 
         <label for="update-precio">Precio:</label>
-        <input type="text" id="update-precio" name="precio" required><br>
+        <input type="number" id="update-precio" name="precio" required><br>
 
         <label for="update-stock">Stock:</label>
-        <input type="text" id="update-stock" name="stock" required><br>
+        <input type="number" id="update-stock" name="stock" required><br>
 
         <label for="update-id_marca">Id_marca:</label>
-        <input type="text" id="update-id_marca" name="id_marca" required><br>
+        <input type="number" id="update-id_marca" name="id_marca" required><br>
 
         <button class="actualizar" type="submit">Actualizar Prenda</button>
         <button type="button" class="cancelar" onclick="cancelarFormulario('update-prenda-form')">Cancelar</button>
