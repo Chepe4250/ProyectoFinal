@@ -85,12 +85,14 @@
     //Evento para cargar la tabla cada vez que la pagina cargue
     window.onload = cargarMarcas;
 
+    //Funcion para activar el formulario de agregar
     function agregarMarca() {
         const form = document.getElementById('agregar-marca-form');
         form.style.display = 'block';
 
     }
 
+    //Funcion para activar el formulario de actualizar
     function mostrarFormActualizarMarca(id_marca, nombre, pais_origen) {
     alert("Mostrar formulario para actualizar")
     const form = document.getElementById('update-marca-form');
@@ -101,6 +103,7 @@
 
     }
 
+    //Evento para cargar el DOM de la pagina y los datos ingresados en el form de agregar
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('agregar-marca-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -115,6 +118,7 @@
         forms.style.display = 'none';
     });
 
+    //Evento para cargar los datos ingresados en el form de actualizar
     document.getElementById('update-marca-form').addEventListener('submit', function(event) {
 
         event.preventDefault();
@@ -133,16 +137,16 @@
     });
     
 
+    //Funcion para guardar los datos obtenidos del form en la tabla de la BD
     function guardarMarca(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Marca guardada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de guardar
+            cargarMarcas(); // Actualizar lista de marcas después de guardar
         } else {
             console.error('Error al guardar la marca:', xhr.statusText);
         }
@@ -153,16 +157,16 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para actualizar los datos obtenidos del form en la tabla de la BD
     function actualizarMarca(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + data.id_marca, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Marca actualizada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de actualizar
+            cargarMarcas(); // Actualizar lista de marcas después de actualizar
         } else {
             console.error('Error al actualizar la marca:', xhr.statusText);
         }
@@ -173,6 +177,7 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para cancelar y ocultar el formulario
     function cancelarFormulario(idFormulario) {
         const form = document.getElementById(idFormulario);
         form.reset(); // opcional, limpia el formulario
@@ -180,15 +185,15 @@
     }
 
 
+    //Funcion para eliminar un dato de la tabla de la BD
     function eliminarMarca(id_marca) {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca?id=' + id_marca, true);
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Marca eliminada exitosamente');
-            cargarMarcas(); // Actualizar lista de libros después de eliminar
+            cargarMarcas(); // Actualizar lista de marcas después de eliminar
         } else {
             console.error('Error al eliminar la marca:', xhr.statusText);
         }
@@ -201,6 +206,7 @@
     </script>
 
     <!-- Formularios -->
+    <!-- Form agregar -->
     <form id="agregar-marca-form" style="display: none;">
         <h3>Agregar Nueva Marca</h3>
 
@@ -214,6 +220,7 @@
         <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-marca-form')">Cancelar</button>
     </form>
 
+    <!-- Form actualizar -->
     <form id="update-marca-form" style="display: none;">
         <h3>Actualizar Marca</h3>
         <input type="hidden" id="update-id_marca" name="id_marca">

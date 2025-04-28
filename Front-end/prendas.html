@@ -93,12 +93,14 @@
     //Evento para cargar la tabla cada vez que la pagina cargue
     window.onload = cargarPrendas;
 
+    //Funcion para activar el formulario de agregar
     function agregarPrenda() {
         const form = document.getElementById('agregar-prenda-form');
         form.style.display = 'block';
 
     }
 
+    //Funcion para activar el formulario de actualizar
     function mostrarFormActualizarPrenda(id_prenda, nombre, tipo, talla, precio, stock, id_marca) {
     alert("Mostrar formulario para actualizar")
     const form = document.getElementById('update-prenda-form');
@@ -113,6 +115,7 @@
 
     }
 
+    //Evento para cargar el DOM de la pagina y los datos ingresados en el form de agregar
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('agregar-prenda-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -131,6 +134,7 @@
         forms.style.display = 'none';
     });
 
+    //Evento para cargar los datos ingresados en el form de actualizar
     document.getElementById('update-prenda-form').addEventListener('submit', function(event) {
 
         event.preventDefault();
@@ -153,16 +157,16 @@
     });
     
 
+    //Funcion para guardar los datos obtenidos del form en la tabla de la BD
     function guardarPrenda(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Prenda guardada exitosamente');
-            cargarPrendas(); // Actualizar lista de libros después de guardar
+            cargarPrendas(); // Actualizar lista de prendas después de guardar
         } else {
             console.error('Error al guardar la prenda:', xhr.statusText);
         }
@@ -173,16 +177,16 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para actualizar los datos obtenidos del form en la tabla de la BD
     function actualizarPrenda(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + data.id_prenda, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Prenda actualizada exitosamente');
-            cargarPrendas(); // Actualizar lista de libros después de actualizar
+            cargarPrendas(); // Actualizar lista de prendas después de actualizar
         } else {
             console.error('Error al actualizar la prenda:', xhr.statusText);
         }
@@ -193,6 +197,7 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para cancelar y ocultar el formulario
     function cancelarFormulario(idFormulario) {
         const form = document.getElementById(idFormulario);
         form.reset(); // opcional, limpia el formulario
@@ -200,15 +205,15 @@
     }
 
 
+    //Funcion para eliminar un dato de la tabla de la BD
     function eliminarPrenda(id_prenda) {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/prenda?id=' + id_prenda, true);
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Prenda eliminada exitosamente');
-            cargarPrendas(); // Actualizar lista de libros después de eliminar
+            cargarPrendas(); // Actualizar lista de prendas después de eliminar
         } else {
             console.error('Error al eliminar la prenda:', xhr.statusText);
         }
@@ -221,6 +226,7 @@
     </script>
 
     <!-- Formularios -->
+    <!-- Form agregar -->
     <form id="agregar-prenda-form" style="display: none;">
         <h3>Agregar Nueva Prenda</h3>
 
@@ -246,6 +252,7 @@
         <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-prenda-form')">Cancelar</button>
     </form>
 
+    <!-- Form actualizar -->
     <form id="update-prenda-form" style="display: none;">
         <h3>Actualizar Marca</h3>
 

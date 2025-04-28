@@ -89,12 +89,14 @@
     //Evento para cargar la tabla cada vez que la pagina cargue
     window.onload = cargarVentas;
 
+    //Funcion para activar el formulario de agregar
     function agregarVenta() {
         const form = document.getElementById('agregar-venta-form');
         form.style.display = 'block';
 
     }
 
+    //Funcion para activar el formulario de actualizar
     function mostrarFormActualizarVenta(id_venta, id_prenda, cantidad, fecha, total) {
     alert("Mostrar formulario para actualizar")
     const form = document.getElementById('update-venta-form');
@@ -107,6 +109,7 @@
 
     }
 
+    //Evento para cargar el DOM de la pagina y los datos ingresados en el form de agregar
     document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('agregar-venta-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -123,6 +126,7 @@
         forms.style.display = 'none';
     });
 
+    //Evento para cargar los datos ingresados en el form de actualizar
     document.getElementById('update-venta-form').addEventListener('submit', function(event) {
 
         event.preventDefault();
@@ -143,16 +147,16 @@
     });
     
 
+    //Funcion para guardar los datos obtenidos del form en la tabla de la BD
     function guardarVenta(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('POST',  'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta', true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    // xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('venta guardada exitosamente');
-            cargarVentas(); // Actualizar lista de libros después de guardar
+            cargarVentas(); // Actualizar lista de ventas después de guardar
         } else {
             console.error('Error al guardar la venta:', xhr.statusText);
         }
@@ -163,16 +167,16 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para actualizar los datos obtenidos del form en la tabla de la BD
     function actualizarVenta(data) {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=' + data.id_venta, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Venta actualizada exitosamente');
-            cargarVentas(); // Actualizar lista de libros después de actualizar
+            cargarVentas(); // Actualizar lista de ventas después de actualizar
         } else {
             console.error('Error al actualizar la venta:', xhr.statusText);
         }
@@ -183,6 +187,7 @@
     xhr.send(JSON.stringify(data));
     }
 
+    //Funcion para cancelar y ocultar el formulario
     function cancelarFormulario(idFormulario) {
         const form = document.getElementById(idFormulario);
         form.reset(); // opcional, limpia el formulario
@@ -190,15 +195,15 @@
     }
 
 
+    //Funcion para eliminar un dato de la tabla de la BD
     function eliminarVenta(id_venta) {
     const xhr = new XMLHttpRequest();
     xhr.open('DELETE', 'http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/venta?id=' + id_venta, true);
-    //xhr.setRequestHeader('Authorization', 'Bearer 0cc175b9c0f1b6a831c399e269772661');
 
     xhr.onload = function () {
         if (xhr.status === 200) {
             console.log('Venta eliminada exitosamente');
-            cargarVentas(); // Actualizar lista de libros después de eliminar
+            cargarVentas(); // Actualizar lista de ventas después de eliminar
         } else {
             console.error('Error al eliminar la venta:', xhr.statusText);
         }
@@ -211,6 +216,7 @@
     </script>
 
     <!-- Formularios -->
+    <!-- Form agregar -->
     <form id="agregar-venta-form" style="display: none;">
         <h3>Agregar Nueva Venta</h3>
 
@@ -230,6 +236,7 @@
         <button type="button" class="cancelar" onclick="cancelarFormulario('agregar-venta-form')">Cancelar</button>
     </form>
 
+    <!-- Form actualizar -->
     <form id="update-venta-form" style="display: none;">
         <h3>Actualizar Marca</h3>
 
