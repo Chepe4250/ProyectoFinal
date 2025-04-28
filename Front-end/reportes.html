@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Ropa - Reportes</title>
+
+    <!-- Estilos de la pagina -->
     <link rel="stylesheet" href="styles/estilos.css">
 </head>
 <body>
+    <!-- Barra de navegacion -->
     <nav>
         <h2>Tienda de ropa</h2>
         <ul>
@@ -18,6 +21,7 @@
         </ul>
     </nav>
 
+    <!-- Tabla Vista1 -->
     <div>
         <h3 style="text-align: center; margin-top: 1rem;">Marcas con ventas</h3>
         <table id="tabla-vista1">
@@ -32,6 +36,7 @@
         </table>
     </div>
 
+    <!-- Tabla Vista2 -->
     <div>
         <h3 style="text-align: center; margin-top: 2rem;">Marcas mas vendidas</h3>
         <table id="tabla-vista2">
@@ -47,6 +52,7 @@
         </table>
     </div>
 
+    <!-- Tabla Vista3 -->
     <div>
         <h3 style="text-align: center; margin-top: 2rem;">Stock de prendas</h3>
         <table id="tabla-vista3">
@@ -64,9 +70,11 @@
         </table>
     </div>
 
+    <!-- Codigo funcional JavaScript -->
     <script>
         let tablaHTML1 = '', tablaHTML2 = '', tablaHTML3 = '';
 
+        //Funcion para cargar el contenido de la Vista de la BD
         function cargarVista1() {
         fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista1')
         .then(response => response.text())
@@ -98,6 +106,7 @@
         }
 
 
+        //Funcion para cargar el contenido de la Vista de la BD
         function cargarVista2() {
         fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista2')
         .then(response => response.text())
@@ -130,6 +139,7 @@
         }
 
 
+        //Funcion para cargar el contenido de la Vista de la BD
         function cargarVista3() {
         fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/vista3')
         .then(response => response.text())
@@ -162,6 +172,7 @@
         });
         }
 
+        //Evento para cargar la tabla cada vez que la pagina cargue
         window.onload = cargarVista1;
     </script>
 </body>

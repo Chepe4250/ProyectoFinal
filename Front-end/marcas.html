@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Ropa</title>
 
+    <!-- Estilos de la pagina -->
     <link rel="stylesheet" href="styles/estilos.css">
 </head>
 <body>
+    <!-- Barra de navegacion -->
     <nav>
         <h2>Tienda de ropa</h2>
         <ul>
@@ -19,6 +21,7 @@
         </ul>
     </nav>
 
+    <!-- Tabla principal -->
     <h2>Marcas existentes</h2>
     <table border="1" id="tabla-marcas">
         <thead>
@@ -33,13 +36,17 @@
         <!-- Contenido de la tabla con respuesta del endpoint-->
         </tbody>
     </table>
+
+    <!-- Boton para activar formulario de agregar -->
     <div style="text-align:center;">
         <button class="agregar" onclick="agregarMarca()">Agregar</button>
     </div>
 
+    <!-- Codigo funcional JavaScript -->
     <script>
     let tablaHTML = '';
 
+    //Funcion para cargar el contenido de la tabla de la BD
     function cargarMarcas() {
         fetch('http://localhost/Des_Plat/ProyectoFinal/api/public/index.php/marca')
         .then(response => response.text())
@@ -75,6 +82,7 @@
         });
     }
 
+    //Evento para cargar la tabla cada vez que la pagina cargue
     window.onload = cargarMarcas;
 
     function agregarMarca() {
